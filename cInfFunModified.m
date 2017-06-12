@@ -6,8 +6,8 @@ function Zt = cInfFunModified(beta, fOption, theta, r, tlo, thi)
 % beta = 7*pi/6;
 % % beta = 0;
 % fOption = 1;
-
-[xt, yt] = cInfFun( theta, r);
+% [xt, yt] = cInfFun( theta, r);
+[xt, yt] = cInfFun2( theta, r);
 
 if fOption == 0
 %     ss.Z = @(t) xt(t/(4*pi)) + 1i*yt(t/(4*pi));

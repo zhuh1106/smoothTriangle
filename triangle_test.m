@@ -2,10 +2,12 @@ function [ss,N] = triangle_test(x1, x2, x3, t, N, r)
 
 qtype = 'p';
 qntype = 'C';
+bdType = 'triangle';
+idNum = 'middle';
 
-Zt1 = cInfBoundary(x1, x2, x3, r, [t(1),t(2),t(3),t(4)]);
-Zt2 = cInfBoundary(x2, x3, x1, r, [t(4),t(5),t(6),t(7)]);
-Zt3 = cInfBoundary(x3, x1, x2, r, [t(7),t(8),t(9),t(10)]);
+Zt1 = cInfBoundary2([x1; x2; x3], r, [t(1),t(2),t(3),t(4)], bdType, idNum);
+Zt2 = cInfBoundary2([x2; x3; x1], r, [t(4),t(5),t(6),t(7)], bdType, idNum);
+Zt3 = cInfBoundary2([x3; x1; x2], r, [t(7),t(8),t(9),t(10)], bdType, idNum);
 
 
 %% assembly

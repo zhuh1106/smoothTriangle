@@ -1,7 +1,9 @@
-function Zt = cInfBoundary(x1, x2, x3, r, tvec)
+function Zt = cInfBoundary(x, r, tvec, idNum)
 % provide a curved line for x1--x2, x3 is also needed for triangle, another
 % point is going to be needed 
-
+if strcmp(idNum,'middle')
+    x1 = x(1,:); x2 = x(2,:); x3 = x(3,:); 
+end
 t1 = tvec(1); t2 = tvec(2); t3 = tvec(3); t4 = tvec(4);
 
 
