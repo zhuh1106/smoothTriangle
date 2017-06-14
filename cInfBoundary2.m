@@ -93,22 +93,32 @@ if dot(vec,u) > 0
 end
 
 %% middle piece
-if strcmp(bdType,'triangle')
-    Zt2 = @(t) xd1(1) + (t-t2)/(t3-t2)*(xd2(1)-xd1(1)) ...
+Zt2 = @(t) xd1(1) + (t-t2)/(t3-t2)*(xd2(1)-xd1(1)) ...
         + 1i*( xd1(2) + (t-t2)/(t3-t2)*(xd2(2)-xd1(2)) );
-elseif strcmp(idNum,'middle')
-    Zt2 = @(t) xd1(1) + (t-t2)/(t3-t2)*(xd2(1)-xd1(1)) ...
-        + 1i*( xd1(2) + (t-t2)/(t3-t2)*(xd2(2)-xd1(2)) );
-elseif strcmp(idNum,'first')
-    Zt2 = @(t) x1(1) + (t-t1)/(t3-t1)*(xd2(1)-x1(1)) ...
-        + 1i*( x1(2) + (t-t1)/(t3-t1)*(xd2(2)-x1(2)) );
-elseif strcmp(idNum,'last')
-    Zt2 = @(t) xd1(1) + (t-t2)/(t4-t2)*(x2(1)-xd1(1)) ...
-        + 1i*( xd1(2) + (t-t2)/(t4-t2)*(x2(2)-xd1(2)) );
-end
+% if strcmp(bdType,'triangle')
+%     Zt2 = @(t) xd1(1) + (t-t2)/(t3-t2)*(xd2(1)-xd1(1)) ...
+%         + 1i*( xd1(2) + (t-t2)/(t3-t2)*(xd2(2)-xd1(2)) );
+% elseif strcmp(idNum,'middle')
+%     Zt2 = @(t) xd1(1) + (t-t2)/(t3-t2)*(xd2(1)-xd1(1)) ...
+%         + 1i*( xd1(2) + (t-t2)/(t3-t2)*(xd2(2)-xd1(2)) );
+% elseif strcmp(idNum,'first')
+%     Zt2 = @(t) x1(1) + (t-t1)/(t3-t1)*(xd2(1)-x1(1)) ...
+%         + 1i*( x1(2) + (t-t1)/(t3-t1)*(xd2(2)-x1(2)) );
+% elseif strcmp(idNum,'last')
+%     Zt2 = @(t) xd1(1) + (t-t2)/(t4-t2)*(x2(1)-xd1(1)) ...
+%         + 1i*( xd1(2) + (t-t2)/(t4-t2)*(x2(2)-xd1(2)) );
+% end
 
 % Zt2 = @(t) xd1(1) + (t-t2)/(t3-t2)*(xd2(1)-xd1(1)) ...
 %         + 1i*( xd1(2) + (t-t2)/(t3-t2)*(xd2(2)-xd1(2)) );
+
+if strcmp(idNum,'first')
+    Zt1 = @(t) x1(1) + (t-t1)/(t2-t1)*(xd1(1)-x1(1)) ...
+        + 1i*( x1(2) + (t-t1)/(t2-t1)*(xd1(2)-x1(2)) );
+elseif strcmp(idNum, 'last')
+    Zt3 = @(t) xd2(1) + (t-t3)/(t4-t3)*(x2(1)-xd2(1)) ...
+        + 1i*( xd2(2) + (t-t3)/(t4-t3)*(x2(2)-xd2(2)) );
+end
     
 
 %% assembly
@@ -119,9 +129,11 @@ elseif strcmp(idNum,'middle')
     Zt = @(t) (t<=t2) .* (xo1(1) + 1i*xo1(2) + Zt1(t)) + ((t>t2).* (t<=t3)) .* (Zt2(t))...
         + (t>t3) .* (xo2(1) + 1i*xo2(2) + Zt3(t));
 elseif strcmp(idNum,'first')
-    Zt = @(t) (t<=t3) .* (Zt2(t)) + (t>t3) .* (xo2(1) + 1i*xo2(2) + Zt3(t));
+    Zt = @(t) (t<=t2) .* (Zt1(t)) + ((t>t2).* (t<=t3)) .* (Zt2(t))...
+        + (t>t3) .* (xo2(1) + 1i*xo2(2) + Zt3(t));
 elseif strcmp(idNum,'last')
-    Zt = @(t) (t<=t2) .* (xo1(1) + 1i*xo1(2) + Zt1(t)) + (t>t2).* (Zt2(t));
+    Zt = @(t) (t<=t2) .* (xo1(1) + 1i*xo1(2) + Zt1(t)) + ((t>t2).* (t<=t3)) .* (Zt2(t))...
+        + (t>t3) .* (Zt3(t));
 end
 
 % Zt = @(t) (t<=t2) .* (xo1(1) + 1i*xo1(2) + Zt1(t)) + ((t>t2).* (t<=t3)) .* (Zt2(t))...

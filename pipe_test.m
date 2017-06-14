@@ -1,27 +1,43 @@
-function [ss,N] = polygon_test(x,r)
+function [su, N] = pipe_test(xu, r)
 
-% x = [0,0;2,0;1,0.4;0.5,1];
-% x = [0,0;2,0;1,1;0.5,1];
-[polySize, ~] = size(x);
+[uWallSize, ~] = size(xu); uWallSize = uWallSize - 1;
+% [lWallSize, ~] = size(xl); lWallSize = lWallSize - 1;
 % r = 0.1;
 
 qtype = 'p';
 qntype = 'C';
 bdType = 'polygon';
-idNum = 'middle';
-N = 48*polySize;
+% idNum = 'middle';
+N = 48*uWallSize;
 
+%% predefine function, and then add each piece
 f = @(s) 0;
-for i = 0:polySize - 1
-    x1 = x(mod(i,polySize)+1,:);
-    x2 = x(mod(i+1,polySize)+1,:);
-    x3 = x(mod(i+2,polySize)+1,:);
-    x4 = x(mod(i+3,polySize)+1,:);
-    t = linspace(i*(2*pi)/polySize,(i+1)*(2*pi)/polySize,4);
+
+%% first piece of upper wall
+idNum = 'first';
+x1 = xu(1,:); x2 = xu(2,:); x3 = xu(3,:);
+% t = linspace(0,2*pi/uWallSize,3);
+t = [0,4*pi/(3*uWallSize),2*pi/uWallSize];
+Zt = cInfBoundary2([x1; x2; x3], r, t, bdType, idNum);
+f = @(s) f(s) + (s>=t(1)).*(s<t(end)).*Zt(s);
+
+%% middle pieces of upper wall
+idNum = 'middle';
+for i = 2:uWallSize - 1 % 2nd to 2nd to last
+    x1 = xu(i-1,:); x2 = xu(i,:); x3 = xu(i+1,:); x4 = xu(i+2,:);
+    t = linspace((i-1)*(2*pi)/uWallSize,i*(2*pi)/uWallSize,4);
     Zt = cInfBoundary2([x1; x2; x3; x4], r, t, bdType, idNum);
 %     ss.Z = @(s) (s<=pi).*Zt1(s) + (s>pi).*Zt2(s);
-    f = @(s) f(s) + (s>t(1)).*(s<=t(end)).*Zt(s);
+    f = @(s) f(s) + (s>=t(1)).*(s<t(end)).*Zt(s);
 end
+
+%% last piece of upper wall
+idNum = 'last';
+x1 = xu(end-2,:); x2 = xu(end-1,:); x3 = xu(end,:);
+% t = linspace((uWallSize-1)*(2*pi)/uWallSize,2*pi,3);
+t = [(uWallSize-1)*(2*pi)/uWallSize,2*pi-4*pi/(3*uWallSize),2*pi];
+Zt = cInfBoundary2([x1; x2; x3], r, t, bdType, idNum);
+f = @(s) f(s) + (s>=t(1)).*(s<=t(end)).*Zt(s);
 
 % % x1 = [-1,1];
 % x2 = [0,0];
@@ -56,20 +72,22 @@ end
 % Zt2 = cInfBoundary2([x1; x2; x3], r, t, bdType, idNum);
 % 
 %% assembly
-ss.Z = @(s) f(s);
+su.Z = @(s) f(s);
 % ss.Z = Z2;
 
 %% quadrature pts get  
-[ss, N, np] = quadr_pan(ss, N, qtype, qntype);
+[su, N, np] = quadr_pan(su, N, qtype, qntype);
 
 %% figure of cInf approx to triangle
 figure()
 % plot(real(ss.x),imag(ss.x),'.')
-plot(real(ss.x),imag(ss.x))
+plot(real(su.x),imag(su.x),'.')
 daspect([1 1 1])
 
 figure()
-plot(linspace(0,2*pi,N),ss.cur)
+plot(linspace(0,2*pi,N),su.cur)
+
+
 % hold on
 % figure()
 % plot(real(ss.x(1:end/12)),imag(ss.x(1:end/12)),'.')
