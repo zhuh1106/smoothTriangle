@@ -1,4 +1,17 @@
 function [ss,N] = triangle_test(x1, x2, x3, t, N, r)
+% function to generate analytic expression of a smooth triangle
+%
+% Input:
+% x1, x2, x3: corners of a triangle
+% t:          each side of a triangle after smoothing is going to be a
+%             piecewise defined function with 3 pieces, with starting and ending info
+%             in parametrization stored in t.
+% N:          number of quadrature points
+% r:          radius
+%
+% Output:
+% ss:         a structure contains all info of smoothed triangle
+% N:          number of quadrature points
 
 qtype = 'p';
 qntype = 'C';

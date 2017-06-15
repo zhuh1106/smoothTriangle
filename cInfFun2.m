@@ -1,5 +1,5 @@
 function [xt, yt] = cInfFun2(theta, r)
-
+% a different choice of c infinity function
 
 alpha = pi*cot(theta);   % derive stretching factor to match angle
 

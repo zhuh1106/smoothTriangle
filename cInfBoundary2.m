@@ -1,6 +1,14 @@
 function Zt = cInfBoundary2(x, r, tvec, bdType, idNum)
-% provide a curved line for x1--x2, x3 is also needed for triangle, another
-% point is going to be needed 
+% provide a curved line for x1--x2, x3 is also needed for triangle
+% 
+% x:      dim 3x2, each row stands for x, y coordinates for a corner of triangle
+% r:      radius to control how much you want to bend one side of a triangle
+% tvec:   vector to store starting and ending of this piecewise defined
+%         boundary
+% bdType: 'triangle' or 'polygon'
+% idNum:  for triangle, it is going to be middle, for pipe generation,
+%         1st and last piece are different from pieces in the middle
+
 
 % x1-x2, or x2-x3('middle') is the straight line to be modified
 if strcmp(bdType,'triangle')

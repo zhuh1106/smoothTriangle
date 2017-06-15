@@ -1,5 +1,5 @@
 % triangle need to be consistent with raidus r
-function result = radius_test(x1,x2,x3,r)
+function [result,R] = radius_test(x1,x2,x3,r)
 % close all
 % clear all
 % x1 = [0,0];

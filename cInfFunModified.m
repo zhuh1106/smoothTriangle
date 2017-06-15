@@ -1,11 +1,14 @@
 function Zt = cInfFunModified(beta, fOption, theta, r, tlo, thi)
-% beta: ratation angle clockwise
-% fOption: flip option
-% theta = pi/6;
-% r = 0.5;
-% beta = 7*pi/6;
-% % beta = 0;
-% fOption = 1;
+% modified c infinity function to adapt to ratation
+%
+% beta:     ratation angle clockwise
+% fOption:  flip option
+% theta:    half of angle formed by x1-x2 and x1-x3
+% r:        radius to control how much is going to be bended
+% tlo:      starting of parametrization
+% thi:      ending of parametrization
+
+
 % [xt, yt] = cInfFun( theta, r);
 [xt, yt] = cInfFun2( theta, r);
 

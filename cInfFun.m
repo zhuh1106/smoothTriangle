@@ -1,5 +1,5 @@
 function [xt, yt] = cInfFun(theta, r)
-
+% c infinity function to smooth a corner
 
 alpha = 12 * cot(theta) / exp(2);   % derive stretching factor to match angle
 
